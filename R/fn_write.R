@@ -110,7 +110,7 @@ write_mthds_for_r3_or_r4_clss <- function (methods_tb, fn_ls, pkg_nm_1L_chr, out
 #' @rdname write_script_to_make_gnrc
 #' @export 
 #' @importFrom ready4fun make_lines_for_fn_dmt close_open_sinks
-#' @importFrom stringr str_replace
+#' @importFrom stringr str_replace str_remove
 #' @keywords internal
 write_script_to_make_gnrc <- function (write_file_ls, gnrc_exists_1L_lgl, gen_mthd_pair_ls, 
     fn_name_1L_chr, fn_type_1L_chr, fn_desc_1L_chr = NA_character_, 
@@ -140,8 +140,8 @@ write_script_to_make_gnrc <- function (write_file_ls, gnrc_exists_1L_lgl, gen_mt
         if (!file.exists(write_file_ls$gnr_file)) {
             write_file_ls$meth_file <- paste0(output_dir_1L_chr, 
                 ifelse(fn_type_1L_chr %in% c("gen_std_s3_mthd", 
-                  "gen_std_s4_mthd"), "/mthd_", "/gs_"), fn_name_1L_chr, 
-                ".R")
+                  "gen_std_s4_mthd"), "/mthd_", "/gs_"), fn_name_1L_chr %>% 
+                  stringr::str_remove("<-"), ".R")
             if (!file.exists(write_file_ls$meth_file)) 
                 file.create(write_file_ls$meth_file)
         }
