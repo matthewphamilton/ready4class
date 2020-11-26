@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_write.R
 \name{write_scripts_to_mk_r4_cls}
 \alias{write_scripts_to_mk_r4_cls}
-\title{Write scripts to make readyforwhatsnext S4 class}
+\title{Write scripts to make ready4 S4 class}
 \usage{
 write_scripts_to_mk_r4_cls(
   name_stub_1L_chr,
@@ -22,6 +22,7 @@ write_scripts_to_mk_r4_cls(
   req_pkgs_chr = NA_character_,
   names_must_match_ls = NULL,
   slots_of_dif_lnts_chr = NULL,
+  helper_1L_lgl = F,
   print_set_cls_1L_lgl = TRUE,
   print_helper = TRUE,
   print_gtrs_strs_1L_lgl = TRUE,
@@ -65,6 +66,8 @@ write_scripts_to_mk_r4_cls(
 
 \item{slots_of_dif_lnts_chr}{Slots of different lengths (a character vector), Default: NULL}
 
+\item{helper_1L_lgl}{Helper (a logical vector of length one), Default: F}
+
 \item{print_set_cls_1L_lgl}{Print set class (a logical vector of length one), Default: TRUE}
 
 \item{print_helper}{PARAM_DESCRIPTION, Default: TRUE}
@@ -78,6 +81,6 @@ write_scripts_to_mk_r4_cls(
 \item{class_in_cache_cdn_1L_chr}{Class in cache condition (a character vector of length one), Default: 'stop'}
 }
 \description{
-write_scripts_to_mk_r4_cls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write scripts to make readyforwhatsnext s4 class. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+write_scripts_to_mk_r4_cls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write scripts to make ready4 s4 class. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 }
 \keyword{internal}

@@ -7,7 +7,8 @@
 make_alg_to_set_mthd(
   name_1L_chr,
   class_nm_1L_chr,
-  fn,
+  fn = NULL,
+  fn_nm_1L_chr = NA_character_,
   pkg_nm_1L_chr = NA_character_,
   where_1L_chr = NA_character_
 )
@@ -17,7 +18,9 @@ make_alg_to_set_mthd(
 
 \item{class_nm_1L_chr}{Class name (a character vector of length one)}
 
-\item{fn}{Function (a function)}
+\item{fn}{Function (a function), Default: NULL}
+
+\item{fn_nm_1L_chr}{Function name (a character vector of length one), Default: 'NA'}
 
 \item{pkg_nm_1L_chr}{Package name (a character vector of length one), Default: 'NA'}
 

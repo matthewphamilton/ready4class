@@ -8,7 +8,7 @@ write_classes.ready4_constructor_tbl <- function(x,
                                                  class_in_cache_cdn_1L_chr = "stop",
                                                  abbreviations_lup = NULL){
   if(is.null(abbreviations_lup))
-    data("abbreviations_lup", package = "ready4class",
+    utils::data("abbreviations_lup", package = "ready4class",
          envir = environment())
   purrr::pwalk(x %>% dplyr::filter(make_s3_lgl == T),
                ~ write_scripts_to_mk_r3_cls(name_stub_1L_chr = ..2,
@@ -23,8 +23,8 @@ write_classes.ready4_constructor_tbl <- function(x,
                                             pt_ns_1L_chr = ifelse(..5[[1]] %in% c("base"),"",..5[[1]]), ## THIS MAY NEED UPDATING
                                             vals_ls = ..6,
                                             allowed_vals_ls = ..7,
-                                            min_max_vals_dbl = ..8,
-                                            start_end_vals_dbl = ..9,
+                                            min_max_vals_dbl = ..8[[1]],
+                                            start_end_vals_dbl = ..9[[1]],
                                             file_exists_cdn_1L_chr = file_exists_cdn_1L_chr,
                                             prototype_lup = prototype_lup,
                                             nss_to_ignore_chr = nss_to_ignore_chr,

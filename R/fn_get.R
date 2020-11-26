@@ -109,10 +109,10 @@ get_parent_cls_ns <- function (prototype_lup, parent_cls_nm_1L_chr, dev_pkg_ns_1
     return(parent_cls_ns)
 }
 #' Get parent class prototype
-#' @description get_parent_cls_pt_fn() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get parent class prototype function. Function argument parent_cls_nm_1L_chr specifies the where to look for the required object. The function returns Parent class prototype (a function).
+#' @description get_parent_cls_pt_fn() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get parent class prototype function. Function argument parent_cls_nm_1L_chr specifies the where to look for the required object. The function returns Parent class prototype function (a character vector).
 #' @param parent_cls_nm_1L_chr Parent class name (a character vector of length one)
 #' @param prototype_lup Prototype (a lookup table)
-#' @return Parent class prototype (a function)
+#' @return Parent class prototype function (a character vector)
 #' @rdname get_parent_cls_pt_fn
 #' @export 
 #' @importFrom ready4fun get_from_lup_obj
@@ -121,8 +121,8 @@ get_parent_cls_pt_fn <- function (parent_cls_nm_1L_chr, prototype_lup)
 {
     parent_cls_pt_fn_chr <- ready4fun::get_from_lup_obj(data_lookup_tb = prototype_lup, 
         match_var_nm_1L_chr = "type_chr", match_value_xx = parent_cls_nm_1L_chr, 
-        target_var_nm_1L_chr = "vals_ls", evaluate_lgl = F)
-    return(parent_cls_pt_fn)
+        target_var_nm_1L_chr = "val_chr", evaluate_lgl = F)
+    return(parent_cls_pt_fn_chr)
 }
 #' Get parent class prototypes
 #' @description get_parent_cls_pts() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get parent class prototypes. Function argument parent_cls_nm_1L_chr specifies the where to look for the required object. The function returns Parent class prototypes (a character vector).

@@ -40,32 +40,37 @@ make_alg_to_get_pt_val <- function(pt_ns_1L_chr = "",
 }
 make_alg_to_set_mthd <- function(name_1L_chr,
                                  class_nm_1L_chr,
-                                 fn,
-                                 pkg_nm_1L_chr = NA_character_ ,
+                                 fn = NULL,
+                                 fn_nm_1L_chr =  NA_character_,
+                                 pkg_nm_1L_chr = NA_character_,
                                  where_1L_chr = NA_character_){
   alg_to_set_mthd_1L_chr <- paste0('methods::setMethod(\"', name_1L_chr, '\"',
          ', ',ifelse(is.na(pkg_nm_1L_chr[1]),paste0('\"',class_nm_1L_chr,'\"'),paste0(make_alg_to_gen_ref_to_cls(class_nm_1L_chr,pkg_nm_1L_chr=pkg_nm_1L_chr))),
-         ', ', transform_fn_into_chr(fn),
+         ', ', ifelse(!is.na(fn_nm_1L_chr),fn_nm_1L_chr,transform_fn_into_chr(fn)),
          ifelse(is.na(where_1L_chr[1]),'',paste0(',\nwhere =  ', where_1L_chr)),
          ')')
   return(alg_to_set_mthd_1L_chr)
 }
 make_alg_to_set_old_clss <- function(type_chr,
-                                     prototype_lup){
-  index_of_s3_lgl <- purrr::map_lgl(type_chr,
-                                ~ ready4fun::get_from_lup_obj(data_lookup_tb = prototype_lup,
-                                                              match_var_nm_1L_chr = "type_chr",
-                                                              match_value_xx = .x,
-                                                              target_var_nm_1L_chr = "old_class_lgl",
-                                                              evaluate_lgl = FALSE)
-  )
+                                     prototype_lup = NULL){
+  if(is.null(prototype_lup)){
+    index_of_s3_lgl <- T
+  }else{
+    index_of_s3_lgl <- purrr::map_lgl(type_chr,
+                                      ~ ready4fun::get_from_lup_obj(data_lookup_tb = prototype_lup,
+                                                                    match_var_nm_1L_chr = "type_chr",
+                                                                    match_value_xx = .x,
+                                                                    target_var_nm_1L_chr = "old_class_lgl",
+                                                                    evaluate_lgl = FALSE)
+    )
+  }
   if(!identical(type_chr[index_of_s3_lgl],character(0))){
     alg_to_set_old_clss_1L_chr <- purrr::map_chr(type_chr[index_of_s3_lgl],
                    ~ paste0("setOldClass(c(\"",
                             .x,
                             "\",\"tbl_df\", \"tbl\", \"data.frame\")",
-                            ",where =  ",
-                            "globalenv()",
+                            ifelse(!is.null(prototype_lup),",where =  ",""),
+                            ifelse(!is.null(prototype_lup),"globalenv()",""),
                             ")")) %>% stringr::str_c(sep="",collapse="\n")
   }else{
     alg_to_set_old_clss_1L_chr <- character(0)
@@ -277,17 +282,17 @@ make_gnrc_mthd_pair_ls <- function(name_1L_chr,
                                   class_nm_1L_chr,
                                   fn){
   gnrc_mthd_pair_ls <- list(generic_1L_chr = make_alg_to_set_gnrc(name_1L_chr,
-                                      args_chr = args_chr,
-                                      signature_1L_chr = signature_1L_chr,
-                                      where_1L_chr = where_1L_chr),
-       method_chr = make_alg_to_set_mthd(name_1L_chr,
-                                    class_nm_1L_chr = class_nm_1L_chr,
-                                    fn = fn,
-                                    pkg_nm_1L_chr = pkg_nm_1L_chr,
-                                    where_1L_chr = where_1L_chr),
-       gen_fn_chr = make_gnrc_fn(name_1L_chr,
-                                    args_chr = args_chr),
-       meth_fn_chr = transform_fn_into_chr(fn))
+                                                                  args_chr = args_chr,
+                                                                  signature_1L_chr = signature_1L_chr,
+                                                                  where_1L_chr = where_1L_chr),
+                            method_chr = make_alg_to_set_mthd(name_1L_chr,
+                                                              class_nm_1L_chr = class_nm_1L_chr,
+                                                              fn = fn,
+                                                              pkg_nm_1L_chr = pkg_nm_1L_chr,
+                                                              where_1L_chr = where_1L_chr),
+                            gen_fn_chr = make_gnrc_fn(name_1L_chr,
+                                                      args_chr = args_chr),
+                            meth_fn_chr = transform_fn_into_chr(fn))
   return(gnrc_mthd_pair_ls)
 }
 make_helper_fn <- function(class_nm_1L_chr,
@@ -329,7 +334,7 @@ make_lines_for_writing_dmtd_fn <- function(fn_name_1L_chr,
                                            class_desc_1L_chr,
                                            abbreviations_lup = NULL){
   if (is.null(abbreviations_lup))
-    data("abbreviations_lup", package = "ready4class",
+    utils::data("abbreviations_lup", package = "ready4class",
          envir = environment())
   ready4fun::make_lines_for_fn_dmt(fn_name_1L_chr = fn_name_1L_chr,
                           fn_type_1L_chr = fn_type_1L_chr,
@@ -346,7 +351,7 @@ make_ls_of_pkgs_to_imp <- function(curr_gnrcs_ls,
   packages_chr <- curr_gnrcs_ls$packages_chr[!curr_gnrcs_ls$packages_chr %in% c(".GlobalEnv")]
   gnrc_gtr_exists_lgl <- purrr::map2_lgl(packages_chr, names(packages_chr), ~ ((.x == fn_name_1L_chr | .y == paste0(fn_name_1L_chr,".",.x)) & !.x %in% nss_to_ignore_chr))
   gnrc_gtr_exists_1L_lgl <- any(gnrc_gtr_exists_lgl)
-  gtr_imps_chr <- ifelse(gen_get_exists_lgl,packages_chr[gnrc_gtr_exists_lgl],NA_character_)
+  gtr_imps_chr <- ifelse(gnrc_gtr_exists_1L_lgl,packages_chr[gnrc_gtr_exists_lgl],NA_character_)
   gnrc_str_exists_lgl <- purrr::map2_lgl(packages_chr, names(packages_chr), ~ ((.x == paste0(fn_name_1L_chr,"<-") | .y == paste0(fn_name_1L_chr,"<-.",.x)) & !.x %in% nss_to_ignore_chr))
   gnrc_str_exists_1L_lgl <- any(gnrc_str_exists_lgl)
   str_imps_chr <- ifelse(gnrc_str_exists_1L_lgl,packages_chr[gnrc_str_exists_lgl],NA_character_)
@@ -378,7 +383,7 @@ make_ls_of_tfd_nms_of_curr_gnrcs <- function(req_pkgs_chr,
 make_one_row_class_pt_tb <- function(class_type_mk_ls,
                                   make_s3_1L_lgl = T){
   one_row_class_pt_tb <- class_type_mk_ls  %>%
-    purrr:::reduce(.init = ready4_constructor_tbl(),
+    purrr::reduce(.init = ready4_constructor_tbl(),
                    ~ {
                      testit::assert(paste0("Allowable list element names are: ", names(.x) %>% paste0(collapse = ",")),names(.y) %in% names(.x))
                      rlang::exec(tibble::add_case,.x,!!!.y)
@@ -433,7 +438,7 @@ make_pt_ls <- function(slots_chr,
                                        ready4fun::get_from_lup_obj(data_lookup_tb = prototype_lup,
                                                                    match_var_nm_1L_chr = "type_chr",
                                                                    match_value_xx = .y,
-                                                                   target_var_nm_1L_chr = "vals_ls",
+                                                                   target_var_nm_1L_chr = "val_chr",
                                                                    evaluate_lgl = FALSE)
                               ))
   if(!is.null(vals_ls)){
@@ -511,8 +516,8 @@ make_pt_ls_for_new_r3_cls <- function(class_name_1L_chr,
                                  base_set_of_clss_to_inc_chr = NULL) %>%
     make_dmt_inc_tag(s3_1L_lgl = T)
   pt_ls_for_new_r3_cls_ls <- list(fn_name_ls = fn_name_ls,
-       fn_body_1L_chr_ls = fn_body_1L_chr_ls,
-       include_tags_chr = include_tags_chr)
+                                  fn_body_1L_chr_ls = fn_body_1L_chr_ls,
+                                  include_tags_chr = include_tags_chr)
   return(pt_ls_for_new_r3_cls_ls)
 }
 make_pt_tb_for_new_r3_cls <- function(x){

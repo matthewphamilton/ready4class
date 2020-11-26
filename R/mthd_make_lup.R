@@ -4,10 +4,9 @@
 #' @param dev_pkg_ns_1L_chr Development package namespace (a character vector of length one)
 #' @param prefix_1L_chr Prefix (a character vector of length one)
 #' @return Instance (a readyforwhatsnext S3 class CLASS PROTOTYPE LOOKUP TABLE)
-#' @rdname make_lup.ready4_constructor_tbl
+#' @rdname make_lup-methods
 #' @export 
 #' @importFrom dplyr mutate select
-#' @keywords internal
 make_lup.ready4_constructor_tbl <- function (x, dev_pkg_ns_1L_chr, prefix_1L_chr) 
 {
     inst_ready4_class_pt_lup <- x %>% dplyr::mutate(type_chr = paste0(prefix_1L_chr, 
@@ -18,3 +17,6 @@ make_lup.ready4_constructor_tbl <- function (x, dev_pkg_ns_1L_chr, prefix_1L_chr
         update_lup_for_ns(attached_nss_chr = dev_pkg_ns_1L_chr)
     return(inst_ready4_class_pt_lup)
 }
+#' @rdname make_lup-methods
+#' @aliases make_lup,ready4_constructor_tbl-method
+methods::setMethod("make_lup", "ready4_constructor_tbl", make_lup.ready4_constructor_tbl)

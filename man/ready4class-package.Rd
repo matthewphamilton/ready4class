@@ -4,17 +4,33 @@
 \name{ready4class-package}
 \alias{ready4class}
 \alias{ready4class-package}
-\title{ready4class: Readyforwhatsnext Tools For Creating And Extending
-Classes.}
+\title{ready4class: Standardised Developer Tools For Creating And Extending
+Classes For Use As Part of The Ready4 Suite}
 \description{
 ready4class provides classes and methods that
 are designed to standardise and streamline the process for extending
 the readyforwhatsnext data synthesis and simulation framework with new
-classes.
+classes.  This development version of the ready4class package has been
+made available as part of the process of testing and documenting the
+package. The tools contained in this test release automate a number of
+tasks which MODIFY THE DIRECTORY STRUCTURE OF YOUR LOCAL MACHINE.
+Therefore, you should only trial this software if you feel confident
+that you understand what it does and have created a sandpit area in
+which you can safely undertake testing. If you have any questions,
+please contact the authors (matthew.hamilton@orygen.org.au).
 }
 \details{
 To learn more about ready4class, start with the vignettes:
 \code{browseVignettes(package = "ready4class")}
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://ready4-dev.github.io/ready4class/}
+  \item \url{https://github.com/ready4-dev/ready4class}
+  \item \url{https://ready4-dev.github.io/ready4/}
+}
+
 }
 \author{
 \strong{Maintainer}: Matthew Hamilton \email{matthew.hamilton@orygen.org.au} (\href{https://orcid.org/0000-0001-7407-9194}{ORCID})

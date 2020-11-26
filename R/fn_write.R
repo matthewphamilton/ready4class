@@ -1,5 +1,5 @@
 #' Write getter setter methods for
-#' @description write_gtr_str_mthds_for_r4() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write getter setter methods for readyforwhatsnext s4. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' @description write_gtr_str_mthds_for_r4() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write getter setter methods for ready4 s4. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 #' @param slot_nm_1L_chr Slot name (a character vector of length one)
 #' @param set_only_1L_lgl Set only (a logical vector of length one)
 #' @param pkgs_to_imp_ls Packages to import (a list)
@@ -68,8 +68,8 @@ write_gtr_str_mthds_for_slots <- function (slot_names_chr, set_only_chr, parent_
         output_dir_1L_chr = output_dir_1L_chr, nss_to_ignore_chr = nss_to_ignore_chr, 
         req_pkgs_chr = req_pkgs_chr))
 }
-#' Write methods for readyforwhatsnext S3 or readyforwhatsnext S4 classes
-#' @description write_mthds_for_r3_or_r4_clss() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write methods for readyforwhatsnext s3 or readyforwhatsnext s4 classes. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' Write methods for ready4 S3 or ready4 S4 classes
+#' @description write_mthds_for_r3_or_r4_clss() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write methods for ready4 s3 or ready4 s4 classes. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 #' @param methods_tb Methods (a tibble)
 #' @param fn_ls Function list (a list of functions)
 #' @param pkg_nm_1L_chr Package name (a character vector of length one)
@@ -100,7 +100,7 @@ write_mthds_for_r3_or_r4_clss <- function (methods_tb, fn_ls, pkg_nm_1L_chr, out
 #' @param fn_desc_1L_chr Function description (a character vector of length one), Default: 'NA'
 #' @param fn_outp_type_1L_chr Function output type (a character vector of length one), Default: 'NA'
 #' @param fn_title_1L_chr Function title (a character vector of length one), Default: 'NA'
-#' @param class_name_chr Class name (a character vector), Default: 'NA'
+#' @param class_nm_1L_chr Class name (a character vector of length one), Default: 'NA'
 #' @param output_dir_1L_chr Output directory (a character vector of length one), Default: 'NA'
 #' @param overwrite_1L_lgl Overwrite (a logical vector of length one), Default: F
 #' @param s3_1L_lgl S3 (a logical vector of length one), Default: F
@@ -110,12 +110,12 @@ write_mthds_for_r3_or_r4_clss <- function (methods_tb, fn_ls, pkg_nm_1L_chr, out
 #' @rdname write_script_to_make_gnrc
 #' @export 
 #' @importFrom ready4fun make_lines_for_fn_dmt close_open_sinks
-#' @importFrom stringr str_replace
+#' @importFrom stringr str_replace str_remove
 #' @keywords internal
 write_script_to_make_gnrc <- function (write_file_ls, gnrc_exists_1L_lgl, gen_mthd_pair_ls, 
     fn_name_1L_chr, fn_type_1L_chr, fn_desc_1L_chr = NA_character_, 
     fn_outp_type_1L_chr = NA_character_, fn_title_1L_chr = NA_character_, 
-    class_name_chr = NA_character_, output_dir_1L_chr = NA_character_, 
+    class_nm_1L_chr = NA_character_, output_dir_1L_chr = NA_character_, 
     overwrite_1L_lgl = F, s3_1L_lgl = F, write_1L_lgl = T, doc_in_class_1L_lgl = F) 
 {
     else_lgl <- write_file_ls$new_file_lgl
@@ -140,8 +140,8 @@ write_script_to_make_gnrc <- function (write_file_ls, gnrc_exists_1L_lgl, gen_mt
         if (!file.exists(write_file_ls$gnr_file)) {
             write_file_ls$meth_file <- paste0(output_dir_1L_chr, 
                 ifelse(fn_type_1L_chr %in% c("gen_std_s3_mthd", 
-                  "gen_std_s4_mthd"), "/mthd_", "/gs_"), fn_name_1L_chr, 
-                ".R")
+                  "gen_std_s4_mthd"), "/mthd_", "/gs_"), fn_name_1L_chr %>% 
+                  stringr::str_remove("<-"), ".R")
             if (!file.exists(write_file_ls$meth_file)) 
                 file.create(write_file_ls$meth_file)
         }
@@ -155,7 +155,7 @@ write_script_to_make_gnrc <- function (write_file_ls, gnrc_exists_1L_lgl, gen_mt
 #' @description write_script_to_make_mthd() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write script to make method. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 #' @param write_file_ls Write file (a list)
 #' @param gen_mthd_pair_ls Generate method pair (a list)
-#' @param class_name_chr Class name (a character vector)
+#' @param class_nm_1L_chr Class name (a character vector of length one)
 #' @param fn_name_1L_chr Function name (a character vector of length one)
 #' @param fn_type_1L_chr Function type (a character vector of length one)
 #' @param fn_desc_1L_chr Function description (a character vector of length one), Default: 'NA'
@@ -168,9 +168,9 @@ write_script_to_make_gnrc <- function (write_file_ls, gnrc_exists_1L_lgl, gen_mt
 #' @rdname write_script_to_make_mthd
 #' @export 
 #' @importFrom ready4fun make_lines_for_fn_dmt close_open_sinks
-#' @importFrom stringr str_replace
+#' @importFrom stringr str_replace str_replace_all
 #' @keywords internal
-write_script_to_make_mthd <- function (write_file_ls, gen_mthd_pair_ls, class_name_chr, fn_name_1L_chr, 
+write_script_to_make_mthd <- function (write_file_ls, gen_mthd_pair_ls, class_nm_1L_chr, fn_name_1L_chr, 
     fn_type_1L_chr, fn_desc_1L_chr = NA_character_, fn_outp_type_1L_chr = NA_character_, 
     imports_chr, write_1L_lgl = T, append_1L_lgl = T, doc_in_class_1L_lgl = F) 
 {
@@ -182,10 +182,11 @@ write_script_to_make_mthd <- function (write_file_ls, gen_mthd_pair_ls, class_na
         ready4fun::make_lines_for_fn_dmt(fn_name_1L_chr = fn_name_1L_chr, 
             fn_type_1L_chr = fn_type_1L_chr, fn = eval(parse(text = gen_mthd_pair_ls$meth_fn_chr)), 
             fn_desc_1L_chr = fn_desc_1L_chr, fn_out_type_1L_chr = fn_outp_type_1L_chr, 
-            class_name_1L_chr = class_name_chr, import_chr = imports_chr, 
+            class_name_1L_chr = class_nm_1L_chr, import_chr = imports_chr, 
             doc_in_class_1L_lgl = doc_in_class_1L_lgl)
         writeLines(gen_mthd_pair_ls$method_chr %>% stringr::str_replace(paste0(",\nwhere =  ", 
-            "globalenv\\(\\)"), ""))
+            "globalenv\\(\\)"), "") %>% stringr::str_replace_all(",..GlobalEnv\"", 
+            ""))
         ready4fun::close_open_sinks()
     }
 }
@@ -224,21 +225,21 @@ write_scripts_to_make_gnrc_and_mthd <- function (fn_name_1L_chr, args_chr = c("x
     doc_in_class_1L_lgl = F, gnrc_exists_1L_lgl, overwrite_1L_lgl = F, 
     s3_1L_lgl, write_1L_lgl) 
 {
-    gen_mthd_pair_ls <- make_gnrc_mthd_pair_ls(name_chr = fn_name_1L_chr, 
+    gen_mthd_pair_ls <- make_gnrc_mthd_pair_ls(name_1L_chr = fn_name_1L_chr, 
         args_chr = args_chr, signature_1L_chr = signature_1L_chr, 
-        pkg_nm_1L_chr = pkg_nm_1L_chr, where_chr = where_chr, 
+        pkg_nm_1L_chr = pkg_nm_1L_chr, where_1L_chr = where_chr, 
         class_nm_1L_chr = class_nm_1L_chr, fn = fn)
     write_file_ls <- write_script_to_make_gnrc(write_file_ls = write_file_ls, 
         gnrc_exists_1L_lgl = gnrc_exists_1L_lgl, gen_mthd_pair_ls = gen_mthd_pair_ls, 
         fn_name_1L_chr = fn_name_1L_chr, fn_type_1L_chr = fn_type_chr[1], 
         fn_desc_1L_chr = fn_desc_chr[1], fn_outp_type_1L_chr = NA_character_, 
-        fn_title_1L_chr = fn_title_1L_chr, class_name_chr = class_nm_1L_chr, 
+        fn_title_1L_chr = fn_title_1L_chr, class_nm_1L_chr = class_nm_1L_chr, 
         output_dir_1L_chr = output_dir_1L_chr, overwrite_1L_lgl = overwrite_1L_lgl, 
         s3_1L_lgl = s3_1L_lgl, write_1L_lgl = write_1L_lgl, doc_in_class_1L_lgl = doc_in_class_1L_lgl)
     write_file_ls$new_file_lgl <- ifelse(!overwrite_1L_lgl, T, 
         write_file_ls$new_file_lgl)
     write_script_to_make_mthd(write_file_ls = write_file_ls, 
-        gen_mthd_pair_ls = gen_mthd_pair_ls, class_name_chr = class_nm_1L_chr, 
+        gen_mthd_pair_ls = gen_mthd_pair_ls, class_nm_1L_chr = class_nm_1L_chr, 
         fn_name_1L_chr = fn_name_1L_chr, fn_type_1L_chr = fn_type_chr[2], 
         fn_desc_1L_chr = fn_desc_chr[2], fn_outp_type_1L_chr = fn_outp_type_1L_chr, 
         imports_chr = imports_chr, write_1L_lgl = write_1L_lgl, 
@@ -278,8 +279,8 @@ write_scripts_to_mk_clss <- function (pts_for_new_clss_ls, pkg_nm_1L_chr, class_
     devtools::load_all()
     pt_lup
 }
-#' Write scripts to make readyforwhatsnext S3 class
-#' @description write_scripts_to_mk_r3_cls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write scripts to make readyforwhatsnext s3 class. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' Write scripts to make ready4 S3 class
+#' @description write_scripts_to_mk_r3_cls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write scripts to make ready4 s3 class. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 #' @param name_stub_1L_chr Name stub (a character vector of length one)
 #' @param name_pfx_1L_chr Name prefix (a character vector of length one), Default: 'ready4_'
 #' @param output_dir_1L_chr Output directory (a character vector of length one), Default: 'data-raw'
@@ -300,6 +301,7 @@ write_scripts_to_mk_clss <- function (pts_for_new_clss_ls, pkg_nm_1L_chr, class_
 #' @return NULL
 #' @rdname write_scripts_to_mk_r3_cls
 #' @export 
+#' @importFrom utils data
 #' @importFrom purrr pwalk
 #' @importFrom ready4fun close_open_sinks
 #' @importFrom devtools document load_all
@@ -312,7 +314,8 @@ write_scripts_to_mk_r3_cls <- function (name_stub_1L_chr, name_pfx_1L_chr = "rea
     file_exists_cdn_1L_chr = "skip", abbreviations_lup = NULL) 
 {
     if (is.null(abbreviations_lup)) 
-        data("abbreviations_lup", package = "ready4class", envir = environment())
+        utils::data("abbreviations_lup", package = "ready4class", 
+            envir = environment())
     if (!dir.exists(output_dir_1L_chr)) 
         dir.create(output_dir_1L_chr)
     class_nm_1L_chr <- paste0(name_pfx_1L_chr, name_stub_1L_chr)
@@ -332,6 +335,9 @@ write_scripts_to_mk_r3_cls <- function (name_stub_1L_chr, name_pfx_1L_chr = "rea
         sink(class_file_chr, append = ifelse(file_exists_cdn_1L_chr == 
             "append", TRUE, FALSE))
         writeLines(s3_components_ls$include_tags_chr)
+        if (type_1L_chr == "tibble") {
+            writeLines(make_alg_to_set_old_clss(class_nm_1L_chr))
+        }
         purrr::pwalk(list(s3_components_ls$fn_name_ls, s3_components_ls$fn_body_1L_chr_ls, 
             c("s3_valid_instance", "s3_unvalidated_instance", 
                 "s3_prototype", "s3_validator", "s3_checker")), 
@@ -343,8 +349,8 @@ write_scripts_to_mk_r3_cls <- function (name_stub_1L_chr, name_pfx_1L_chr = "rea
     devtools::document()
     devtools::load_all()
 }
-#' Write scripts to make readyforwhatsnext S4 class
-#' @description write_scripts_to_mk_r4_cls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write scripts to make readyforwhatsnext s4 class. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' Write scripts to make ready4 S4 class
+#' @description write_scripts_to_mk_r4_cls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write scripts to make ready4 s4 class. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 #' @param name_stub_1L_chr Name stub (a character vector of length one)
 #' @param name_pfx_1L_chr Name prefix (a character vector of length one), Default: 'ready4_'
 #' @param output_dir_1L_chr Output directory (a character vector of length one), Default: 'data-raw'
@@ -362,6 +368,7 @@ write_scripts_to_mk_r3_cls <- function (name_stub_1L_chr, name_pfx_1L_chr = "rea
 #' @param req_pkgs_chr Req packages (a character vector), Default: 'NA'
 #' @param names_must_match_ls Names must match (a list), Default: NULL
 #' @param slots_of_dif_lnts_chr Slots of different lengths (a character vector), Default: NULL
+#' @param helper_1L_lgl Helper (a logical vector of length one), Default: F
 #' @param print_set_cls_1L_lgl Print set class (a logical vector of length one), Default: TRUE
 #' @param print_helper PARAM_DESCRIPTION, Default: TRUE
 #' @param print_gtrs_strs_1L_lgl Print getters setters (a logical vector of length one), Default: TRUE
@@ -381,16 +388,16 @@ write_scripts_to_mk_r4_cls <- function (name_stub_1L_chr, name_pfx_1L_chr = "rea
     allowed_vals_ls = NULL, clss_to_inc_chr = NULL, prototype_lup, 
     nss_to_ignore_chr = NA_character_, req_pkgs_chr = NA_character_, 
     names_must_match_ls = NULL, slots_of_dif_lnts_chr = NULL, 
-    print_set_cls_1L_lgl = TRUE, print_helper = TRUE, print_gtrs_strs_1L_lgl = TRUE, 
-    print_validator_1L_lgl = TRUE, print_meaningful_nms_ls_1L_lgl = TRUE, 
-    class_in_cache_cdn_1L_chr = "stop") 
+    helper_1L_lgl = F, print_set_cls_1L_lgl = TRUE, print_helper = TRUE, 
+    print_gtrs_strs_1L_lgl = TRUE, print_validator_1L_lgl = TRUE, 
+    print_meaningful_nms_ls_1L_lgl = TRUE, class_in_cache_cdn_1L_chr = "stop") 
 {
     if (!is.null(outp_sub_dir_1L_chr)) {
         output_dir_1L_chr <- paste0(output_dir_1L_chr, "/", outp_sub_dir_1L_chr)
         if (!dir.exists(output_dir_1L_chr)) 
             dir.create(output_dir_1L_chr)
     }
-    proto_ls <- make_pt_ls(slots_chr = slots_chr, type_chr = type_chr, 
+    pt_ls <- make_pt_ls(slots_chr = slots_chr, type_chr = type_chr, 
         vals_ls = vals_ls, prototype_lup = prototype_lup)
     class_nm_1L_chr <- paste0(name_pfx_1L_chr, name_stub_1L_chr)
     output_file_class <- get_class_fl_nms(class_names_chr = class_nm_1L_chr, 
@@ -398,20 +405,19 @@ write_scripts_to_mk_r4_cls <- function (name_stub_1L_chr, name_pfx_1L_chr = "rea
     parent_ns_ls <- get_parent_cls_ns(prototype_lup = prototype_lup, 
         parent_cls_nm_1L_chr = parent_cls_nm_1L_chr, dev_pkg_ns_1L_chr = nss_to_ignore_chr[1])
     write_to_mk_r4_cls(class_nm_1L_chr = class_nm_1L_chr, slots_chr = slots_chr, 
-        type_chr = type_chr, proto_ls = proto_ls, parent_cls_nm_1L_chr = parent_cls_nm_1L_chr, 
+        type_chr = type_chr, pt_ls = pt_ls, parent_cls_nm_1L_chr = parent_cls_nm_1L_chr, 
         print_set_cls_1L_lgl = print_set_cls_1L_lgl, class_desc_1L_chr = class_desc_1L_chr, 
         output_file_class = output_file_class, clss_to_inc_chr = clss_to_inc_chr, 
-        prototype_lup = prototype_lup, helper_lgl = print_helper, 
-        parent_ns_ls = parent_ns_ls)
+        prototype_lup = prototype_lup, helper_1L_lgl = F, parent_ns_ls = parent_ns_ls)
     helper_function <- make_helper_fn(class_nm_1L_chr = class_nm_1L_chr, 
         parent_cls_nm_1L_chr = parent_cls_nm_1L_chr, slots_chr = slots_chr, 
-        proto_ls = proto_ls, prototype_lup = prototype_lup, parent_ns_ls = parent_ns_ls)
+        pt_ls = pt_ls, prototype_lup = prototype_lup, parent_ns_ls = parent_ns_ls)
     eval(parse(text = helper_function))
-    if (print_helper) {
+    if (helper_1L_lgl) {
         sink(output_file_class, append = TRUE)
         ready4fun::make_lines_for_fn_dmt(fn_name_1L_chr = class_nm_1L_chr, 
             fn_type_1L_chr = "set_class", fn = eval(parse(text = class_nm_1L_chr)), 
-            class_name_chr = class_nm_1L_chr)
+            class_name_1L_chr = class_nm_1L_chr)
         writeLines(helper_function)
         ready4fun::close_open_sinks()
     }
@@ -491,6 +497,7 @@ write_slot_gtr_str_mthds <- function (slot_nm_1L_chr, set_only_1L_lgl, parent_cl
 #' @rdname write_std_mthd
 #' @export 
 #' @importFrom testit assert
+#' @importFrom utils installed.packages
 #' @importFrom purrr discard
 #' @keywords internal
 write_std_mthd <- function (fn, fn_name_1L_chr, class_nm_1L_chr, fn_desc_chr, fn_title_1L_chr, 
@@ -507,10 +514,12 @@ write_std_mthd <- function (fn, fn_name_1L_chr, class_nm_1L_chr, fn_desc_chr, fn
         "/meth_", fn_name_1L_chr, ".R"))
     curr_gnrcs_ls <- make_ls_of_tfd_nms_of_curr_gnrcs(req_pkgs_chr = NA_character_, 
         generic_1L_chr = fn_name_1L_chr, nss_to_ignore_chr = ifelse(pkg_nm_1L_chr %in% 
-            rownames(installed.packages()), pkg_nm_1L_chr, NA_character_))
+            rownames(utils::installed.packages()), pkg_nm_1L_chr, 
+            NA_character_))
     pkgs_to_imp_ls <- make_ls_of_pkgs_to_imp(curr_gnrcs_ls = curr_gnrcs_ls, 
         fn_name_1L_chr = fn_name_1L_chr, nss_to_ignore_chr = ifelse(pkg_nm_1L_chr %in% 
-            rownames(installed.packages()), pkg_nm_1L_chr, NA_character_))
+            rownames(utils::installed.packages()), pkg_nm_1L_chr, 
+            NA_character_))
     gnrc_exists_1L_lgl <- pkgs_to_imp_ls$gnrc_gtr_exists_1L_lgl
     imports_chr <- pkgs_to_imp_ls$gtr_imps_chr[pkgs_to_imp_ls$gtr_imps_chr != 
         pkg_nm_1L_chr]
@@ -566,19 +575,19 @@ write_to_delete_gnrc_fn_fls <- function (x, output_dir_1L_chr)
             ~append(.x, .y[!.y %in% .x])), ".R") %>% purrr::walk(~if (file.exists(.x)) 
             file.remove(.x))
 }
-#' Write to make readyforwhatsnext S4 class
-#' @description write_to_mk_r4_cls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write to make readyforwhatsnext s4 class. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' Write to make ready4 S4 class
+#' @description write_to_mk_r4_cls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write to make ready4 s4 class. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 #' @param class_nm_1L_chr Class name (a character vector of length one)
 #' @param slots_chr Slots (a character vector)
 #' @param type_chr Type (a character vector)
-#' @param proto_ls Proto (a list)
+#' @param pt_ls Prototype (a list)
 #' @param parent_cls_nm_1L_chr Parent class name (a character vector of length one)
 #' @param print_set_cls_1L_lgl Print set class (a logical vector of length one)
 #' @param class_desc_1L_chr Class description (a character vector of length one)
 #' @param output_file_class PARAM_DESCRIPTION
 #' @param clss_to_inc_chr Classes to include (a character vector)
 #' @param prototype_lup Prototype (a lookup table)
-#' @param helper_lgl Helper (a logical vector), Default: F
+#' @param helper_1L_lgl Helper (a logical vector of length one), Default: F
 #' @param parent_ns_ls Parent namespace (a list)
 #' @return NULL
 #' @rdname write_to_mk_r4_cls
@@ -587,9 +596,9 @@ write_to_delete_gnrc_fn_fls <- function (x, output_dir_1L_chr)
 #' @importFrom stringr str_c str_replace_all str_replace
 #' @importFrom ready4fun update_ns close_open_sinks
 #' @keywords internal
-write_to_mk_r4_cls <- function (class_nm_1L_chr, slots_chr, type_chr, proto_ls, parent_cls_nm_1L_chr, 
+write_to_mk_r4_cls <- function (class_nm_1L_chr, slots_chr, type_chr, pt_ls, parent_cls_nm_1L_chr, 
     print_set_cls_1L_lgl, class_desc_1L_chr, output_file_class, 
-    clss_to_inc_chr, prototype_lup, helper_lgl = F, parent_ns_ls) 
+    clss_to_inc_chr, prototype_lup, helper_1L_lgl = F, parent_ns_ls) 
 {
     slot_str <- purrr::map2_chr(slots_chr, type_chr, ~paste0(.x, 
         " = \"", .y, "\"")) %>% stringr::str_c(sep = "", collapse = ",") %>% 
@@ -603,10 +612,10 @@ write_to_mk_r4_cls <- function (class_nm_1L_chr, slots_chr, type_chr, proto_ls, 
     else {
         old_class_tb_extension <- ""
     }
-    prototype <- eval(parse(text = proto_ls))
+    prototype <- eval(parse(text = pt_ls))
     if (is.null(parent_cls_nm_1L_chr)) {
         st_class_fn <- paste0("methods::setClass(", make_alg_to_gen_ref_to_cls(class_nm_1L_chr), 
-            ",\nslots = ", slot_str, ",\nprototype =  ", proto_ls, 
+            ",\nslots = ", slot_str, ",\nprototype =  ", pt_ls, 
             ",\nwhere =  ", "globalenv()", ")")
     }
     else {
@@ -614,7 +623,7 @@ write_to_mk_r4_cls <- function (class_nm_1L_chr, slots_chr, type_chr, proto_ls, 
             pkg_nm_1L_chr = transform_parent_ns_ls(parent_ns_ls) %>% 
                 ready4fun::update_ns()), ",\ncontains = \"", 
             parent_cls_nm_1L_chr, "\",\nslots = ", slot_str, 
-            ",\nprototype =  ", proto_ls, ",\nwhere =  ", "globalenv()", 
+            ",\nprototype =  ", pt_ls, ",\nwhere =  ", "globalenv()", 
             ")")
         parent_slots_chr <- get_parent_cls_slot_nms(parent_cls_nm_1L_chr = parent_cls_nm_1L_chr, 
             parent_ns_ls = parent_ns_ls)
@@ -640,9 +649,9 @@ write_to_mk_r4_cls <- function (class_nm_1L_chr, slots_chr, type_chr, proto_ls, 
                 F, ifelse(is.na(parent_ns_ls$transformed_1L_chr), 
                   F, parent_ns_ls$transformed_1L_chr != "")), 
                 "", paste0("#' @import ", parent_ns_ls$transformed_1L_chr, 
-                  "\n")), ifelse(helper_lgl, "", paste0("#' @exportClass ", 
-                class_nm_1L_chr, "\n")), ifelse(helper_lgl, "", 
-                paste0(class_nm_1L_chr, " <- ")), st_class_fn %>% 
+                  "\n")), ifelse(helper_1L_lgl, paste0("#' @exportClass ", 
+                class_nm_1L_chr, "\n"), ""), ifelse(helper_1L_lgl, 
+                "", paste0(class_nm_1L_chr, " <- ")), st_class_fn %>% 
                 stringr::str_replace(paste0(",\nwhere =  ", "globalenv\\(\\)"), 
                   "") %>% transform_alg_to_ref_cls_nm(pkg_nm_1L_chr = ifelse(is.null(parent_cls_nm_1L_chr), 
                 ".GlobalEnv", transform_parent_ns_ls(parent_ns_ls) %>% 

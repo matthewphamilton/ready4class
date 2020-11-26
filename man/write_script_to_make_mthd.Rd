@@ -7,7 +7,7 @@
 write_script_to_make_mthd(
   write_file_ls,
   gen_mthd_pair_ls,
-  class_name_chr,
+  class_nm_1L_chr,
   fn_name_1L_chr,
   fn_type_1L_chr,
   fn_desc_1L_chr = NA_character_,
@@ -23,7 +23,7 @@ write_script_to_make_mthd(
 
 \item{gen_mthd_pair_ls}{Generate method pair (a list)}
 
-\item{class_name_chr}{Class name (a character vector)}
+\item{class_nm_1L_chr}{Class name (a character vector of length one)}
 
 \item{fn_name_1L_chr}{Function name (a character vector of length one)}
 
